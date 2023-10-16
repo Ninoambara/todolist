@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -8,10 +8,12 @@ function App() {
   const [todoText, setTodoText] = useState("");
 
   const addTodo = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (todoText.trim() !== "") {
       setTodos([...todos, todoText]);
       setTodoText("");
+
+      localStorage.setItem("todos", JSON.stringify([...todos, todoText]));
     }
   };
 
@@ -19,16 +21,27 @@ function App() {
     const removeItem = [...todos];
     removeItem.splice(index, 1);
     setTodos(removeItem);
+
+    localStorage.setItem("todos", JSON.stringify(removeItem));
   };
+
+  useEffect(() => {
+    const savedTodos = localStorage.getItem("todos");
+    if (savedTodos) {
+      setTodos(JSON.parse(savedTodos));
+    }
+  }, []);
 
   return (
     <div className="flex justify-center">
       <div className="py-10 px-16 rounded-lg mt-10">
-        <h1 className="shadow-2xl px-11 text-5xl text-white">TODOLIST</h1>
+        <h1 className="shadow-2xl px-20 text-5xl border-b-2 text-white">
+          TODOLIST
+        </h1>
         <div>
           <form onSubmit={addTodo}>
             <input
-              className="text-white shadow-2xl px-4 py-4 mt-10 border border-white rounded-md"
+              className="text-white shadow-2xl px-10 py-4 mt-10 border border-white rounded-md"
               placeholder="Add new"
               value={todoText}
               onChange={(e) => setTodoText(e.target.value)}
@@ -47,11 +60,11 @@ function App() {
             {todos.map((todo, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center bg-blue-200 hover:bg-blue-100 text-black p-2 rounded-md mt-2 py-5"
+                className="flex transition-all duration-300 justify-between items-center border border-white hover:bg-blue-100 text-white hover:text-black p-3 rounded-md mt-2 py-5"
               >
                 {todo}
                 <button
-                  className="bg-red-500 text-white px-2 ml-2 rounded-md"
+                  className="bg-red-500 hover:bg-red-400 text-white px-2 ml-2 rounded-md"
                   onClick={() => removeTodo(index)}
                 >
                   X
