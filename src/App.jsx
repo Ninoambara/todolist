@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import Swal from "sweetalert2";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -10,19 +11,50 @@ function App() {
   const addTodo = (e) => {
     e.preventDefault();
     if (todoText.trim() !== "") {
-      setTodos([...todos, todoText]);
+      setTodos([...todos, { name: todoText, checked: false }]);
       setTodoText("");
 
-      localStorage.setItem("todos", JSON.stringify([...todos, todoText]));
+      localStorage.setItem(
+        "todos",
+        JSON.stringify([...todos, { name: todoText, checked: false }])
+      );
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
-  const removeTodo = (index) => {
-    const removeItem = [...todos];
-    removeItem.splice(index, 1);
-    setTodos(removeItem);
+  const doneTodo = (index) => {
+    const doneTodo = [...todos];
+    doneTodo[index].checked = !doneTodo[index].checked;
+    setTodos(doneTodo);
 
-    localStorage.setItem("todos", JSON.stringify(removeItem));
+    localStorage.setItem("todos", JSON.stringify(doneTodo));
+  };
+
+  const removeTodo = (index) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const removeItem = [...todos];
+        removeItem.splice(index, 1);
+        setTodos(removeItem);
+
+        localStorage.setItem("todos", JSON.stringify(removeItem));
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
   };
 
   useEffect(() => {
@@ -41,7 +73,7 @@ function App() {
         <div>
           <form onSubmit={addTodo}>
             <input
-              className="text-white shadow-2xl px-10 py-4 mt-10 border border-white rounded-md"
+              className="text-white shadow-2xl px-10 py-4 mt-10 border bg-[#242424] border-white rounded-md"
               placeholder="Add new"
               value={todoText}
               onChange={(e) => setTodoText(e.target.value)}
@@ -60,15 +92,33 @@ function App() {
             {todos.map((todo, index) => (
               <div
                 key={index}
-                className="flex transition-all duration-300 justify-between items-center border border-white hover:bg-blue-100 text-white hover:text-black p-3 rounded-md mt-2 py-5"
+                className="flex button transition-all duration-300 justify-between items-center border border-white text-white p-3 rounded-md mt-2 py-5"
               >
-                {todo}
-                <button
-                  className="bg-red-500 hover:bg-red-400 text-white px-2 ml-2 rounded-md"
-                  onClick={() => removeTodo(index)}
-                >
-                  X
-                </button>
+                {todo.name}
+                <div>
+                  {todo.checked ? (
+                    <button
+                      className="bg-green-500 hover:bg-green-400 text-white px-2 ml-2 rounded-md"
+                      onClick={() => doneTodo(index)}
+                    >
+                      V
+                    </button>
+                  ) : (
+                    <button
+                      className=" hover:bg-green-400 text-white px-2 ml-2 rounded-md"
+                      onClick={() => doneTodo(index)}
+                    >
+                      V
+                    </button>
+                  )}
+
+                  <button
+                    className="bg-red-500 hover:bg-red-400 text-white px-2 ml-2 rounded-md"
+                    onClick={() => removeTodo(index)}
+                  >
+                    X
+                  </button>
+                </div>
               </div>
             ))}
           </div>
