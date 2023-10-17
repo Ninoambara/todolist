@@ -73,7 +73,7 @@ function App() {
         <div>
           <form onSubmit={addTodo}>
             <input
-              className="text-white shadow-2xl px-10 py-4 mt-10 border bg-[#242424] border-white rounded-md"
+              className="text-white shadow-2xl px-10 py-4 mt-10 border max-[512px]:px-9 bg-[#242424] border-white rounded-md"
               placeholder="Add new"
               value={todoText}
               onChange={(e) => setTodoText(e.target.value)}
