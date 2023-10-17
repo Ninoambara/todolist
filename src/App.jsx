@@ -66,7 +66,7 @@ function App() {
 
   return (
     <div className="flex justify-center">
-      <div className="py-10 px-16 rounded-lg mt-10">
+      <div className="py-10 max-[512px]:px-4 px-16 rounded-lg mt-10">
         <h1 className="shadow-2xl px-20 text-5xl border-b-2 text-white">
           TODOLIST
         </h1>
