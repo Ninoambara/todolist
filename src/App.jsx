@@ -94,21 +94,25 @@ function App() {
                 key={index}
                 className="flex button transition-all duration-300 justify-between items-center border border-white text-white p-3 rounded-md mt-2 py-5"
               >
-                {todo.name}
+                {todo.checked ? (
+                  <div className="line-through decoration-2">{todo.name}</div>
+                ) : (
+                  todo.name
+                )}
                 <div>
                   {todo.checked ? (
                     <button
-                      className="bg-green-500 hover:bg-green-400 text-white px-2 ml-2 rounded-md"
+                      className="bg-green-500 border border-green-500 hover:bg-green-400 text-white px-2 py-0 ml-2 rounded-md"
                       onClick={() => doneTodo(index)}
                     >
-                      V
+                      <i class="fa-solid fa-check fa-xs"></i>
                     </button>
                   ) : (
                     <button
-                      className=" hover:bg-green-400 text-white px-2 ml-2 rounded-md"
+                      className=" border border-white  text-white px-2 ml-2 rounded-md"
                       onClick={() => doneTodo(index)}
                     >
-                      V
+                      <i class="fa-solid fa-check fa-xs"></i>
                     </button>
                   )}
 
