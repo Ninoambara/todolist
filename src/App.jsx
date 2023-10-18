@@ -66,14 +66,14 @@ function App() {
 
   return (
     <div className="flex justify-center">
-      <div className="py-10 max-[512px]:px-4 px-16 rounded-lg mt-10">
+      <div className="py-10 px-4 md:px-16 rounded-lg mt-10">
         <h1 className="shadow-2xl px-20 text-5xl border-b-2 text-white">
           TODOLIST
         </h1>
         <div>
           <form onSubmit={addTodo}>
             <input
-              className="text-white shadow-2xl px-10 py-4 mt-10 border max-[512px]:px-5 bg-[#242424] border-white rounded-md"
+              className="text-white shadow-2xl md:px-10 sm:px-8 py-4 mt-10 border px-9 bg-[#242424] border-white rounded-md"
               placeholder="Add new"
               value={todoText}
               onChange={(e) => setTodoText(e.target.value)}
